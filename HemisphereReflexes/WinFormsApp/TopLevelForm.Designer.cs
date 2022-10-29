@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp
 {
-    partial class Form1
+    partial class TopLevelForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -100,7 +100,6 @@
             this.canvasPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.canvasPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.canvasPanel.Controls.Add(this.pictureBox1);
             this.canvasPanel.Location = new System.Drawing.Point(0, 0);
             this.canvasPanel.Margin = new System.Windows.Forms.Padding(15);
@@ -110,21 +109,24 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(688, 519);
+            this.pictureBox1.Size = new System.Drawing.Size(690, 521);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.WaitOnLoad = true;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // Form1
+            // TopLevelForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(901, 521);
             this.Controls.Add(this.mainPanel);
-            this.Name = "Form1";
+            this.Name = "TopLevelForm";
             this.Text = "Form1";
             this.mainPanel.ResumeLayout(false);
             this.controlsGroupBox.ResumeLayout(false);

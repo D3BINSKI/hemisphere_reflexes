@@ -23,4 +23,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\ObjParser\ObjParser.csproj" />
+  </ItemGroup>
+
 </Project>
