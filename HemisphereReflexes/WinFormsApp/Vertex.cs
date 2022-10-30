@@ -42,10 +42,11 @@ public class Vertex
         Z = Z * kZ;
     }
     
-    public void Move(float deltaX, float deltaY)
+    public void Move(float deltaX, float deltaY, float deltaZ)
     {
         X += deltaX;
         Y += deltaY;
+        Z += deltaZ;
     }
     
     public bool Equals(Vertex? v)

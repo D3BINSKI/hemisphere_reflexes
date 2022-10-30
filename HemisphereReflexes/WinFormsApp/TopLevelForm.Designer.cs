@@ -30,15 +30,19 @@
         {
             this.mainPanel = new System.Windows.Forms.Panel();
             this.controlsGroupBox = new System.Windows.Forms.GroupBox();
-            this.debugTextBox = new System.Windows.Forms.RichTextBox();
+            this.sideViewPanel = new System.Windows.Forms.Panel();
+            this.sideViewPictureBox = new System.Windows.Forms.PictureBox();
             this.pauseBttn = new System.Windows.Forms.Button();
             this.startBttn = new System.Windows.Forms.Button();
             this.canvasPanel = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.renderPictureBox = new System.Windows.Forms.PictureBox();
+            this.debugTextBox = new System.Windows.Forms.RichTextBox();
             this.mainPanel.SuspendLayout();
             this.controlsGroupBox.SuspendLayout();
+            this.sideViewPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sideViewPictureBox)).BeginInit();
             this.canvasPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.renderPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // mainPanel
@@ -48,35 +52,47 @@
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPanel.Location = new System.Drawing.Point(0, 0);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(901, 521);
+            this.mainPanel.Size = new System.Drawing.Size(973, 860);
             this.mainPanel.TabIndex = 0;
             // 
             // controlsGroupBox
             // 
+            this.controlsGroupBox.Controls.Add(this.sideViewPanel);
             this.controlsGroupBox.Controls.Add(this.debugTextBox);
             this.controlsGroupBox.Controls.Add(this.pauseBttn);
             this.controlsGroupBox.Controls.Add(this.startBttn);
             this.controlsGroupBox.Dock = System.Windows.Forms.DockStyle.Right;
-            this.controlsGroupBox.Location = new System.Drawing.Point(697, 0);
+            this.controlsGroupBox.Location = new System.Drawing.Point(769, 0);
             this.controlsGroupBox.Margin = new System.Windows.Forms.Padding(5);
             this.controlsGroupBox.Name = "controlsGroupBox";
-            this.controlsGroupBox.Size = new System.Drawing.Size(204, 521);
+            this.controlsGroupBox.Size = new System.Drawing.Size(204, 860);
             this.controlsGroupBox.TabIndex = 1;
             this.controlsGroupBox.TabStop = false;
             this.controlsGroupBox.Text = "Controls";
             // 
-            // debugTextBox
+            // sideViewPanel
             // 
-            this.debugTextBox.Location = new System.Drawing.Point(11, 160);
-            this.debugTextBox.Name = "debugTextBox";
-            this.debugTextBox.Size = new System.Drawing.Size(181, 207);
-            this.debugTextBox.TabIndex = 2;
-            this.debugTextBox.Text = "";
+            this.sideViewPanel.Controls.Add(this.sideViewPictureBox);
+            this.sideViewPanel.Location = new System.Drawing.Point(6, 26);
+            this.sideViewPanel.Name = "sideViewPanel";
+            this.sideViewPanel.Size = new System.Drawing.Size(186, 207);
+            this.sideViewPanel.TabIndex = 3;
+            // 
+            // sideViewPictureBox
+            // 
+            this.sideViewPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.sideViewPictureBox.BackColor = System.Drawing.SystemColors.Window;
+            this.sideViewPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.sideViewPictureBox.Name = "sideViewPictureBox";
+            this.sideViewPictureBox.Size = new System.Drawing.Size(186, 207);
+            this.sideViewPictureBox.TabIndex = 0;
+            this.sideViewPictureBox.TabStop = false;
             // 
             // pauseBttn
             // 
-            this.pauseBttn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pauseBttn.Location = new System.Drawing.Point(3, 52);
+            this.pauseBttn.Location = new System.Drawing.Point(6, 276);
             this.pauseBttn.Margin = new System.Windows.Forms.Padding(5);
             this.pauseBttn.Name = "pauseBttn";
             this.pauseBttn.Size = new System.Drawing.Size(198, 29);
@@ -86,8 +102,7 @@
             // 
             // startBttn
             // 
-            this.startBttn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.startBttn.Location = new System.Drawing.Point(3, 23);
+            this.startBttn.Location = new System.Drawing.Point(6, 239);
             this.startBttn.Name = "startBttn";
             this.startBttn.Size = new System.Drawing.Size(198, 29);
             this.startBttn.TabIndex = 0;
@@ -100,38 +115,49 @@
             this.canvasPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.canvasPanel.Controls.Add(this.pictureBox1);
+            this.canvasPanel.Controls.Add(this.renderPictureBox);
             this.canvasPanel.Location = new System.Drawing.Point(0, 0);
             this.canvasPanel.Margin = new System.Windows.Forms.Padding(15);
             this.canvasPanel.Name = "canvasPanel";
-            this.canvasPanel.Size = new System.Drawing.Size(690, 521);
+            this.canvasPanel.Size = new System.Drawing.Size(762, 860);
             this.canvasPanel.TabIndex = 0;
             // 
-            // pictureBox1
+            // renderPictureBox
             // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(690, 521);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.WaitOnLoad = true;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.renderPictureBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.renderPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.renderPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.renderPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.renderPictureBox.Name = "renderPictureBox";
+            this.renderPictureBox.Size = new System.Drawing.Size(762, 860);
+            this.renderPictureBox.TabIndex = 0;
+            this.renderPictureBox.TabStop = false;
+            this.renderPictureBox.WaitOnLoad = true;
+            this.renderPictureBox.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
+            this.renderPictureBox.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // debugTextBox
+            // 
+            this.debugTextBox.Location = new System.Drawing.Point(3, 556);
+            this.debugTextBox.Name = "debugTextBox";
+            this.debugTextBox.Size = new System.Drawing.Size(181, 207);
+            this.debugTextBox.TabIndex = 2;
+            this.debugTextBox.Text = "";
             // 
             // TopLevelForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(901, 521);
+            this.ClientSize = new System.Drawing.Size(973, 860);
             this.Controls.Add(this.mainPanel);
             this.Name = "TopLevelForm";
             this.Text = "Form1";
             this.mainPanel.ResumeLayout(false);
             this.controlsGroupBox.ResumeLayout(false);
+            this.sideViewPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.sideViewPictureBox)).EndInit();
             this.canvasPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.renderPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -140,10 +166,12 @@
 
         private Panel mainPanel;
         private Panel canvasPanel;
-        private PictureBox pictureBox1;
+        private PictureBox renderPictureBox;
         private GroupBox controlsGroupBox;
         private Button pauseBttn;
         private Button startBttn;
+        private Panel sideViewPanel;
+        private PictureBox sideViewPictureBox;
         private RichTextBox debugTextBox;
     }
 }

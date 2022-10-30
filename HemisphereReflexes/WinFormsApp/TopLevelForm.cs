@@ -6,16 +6,18 @@ namespace WinFormsApp
     {
         List<Point3D> _clickedPoints = new List<Point3D>();
         private Render _renderedObject;
-        IEnumerable<(Vertex, Vertex)> _edgesToDraw;
+        IEnumerable<Edge> _edgesToDraw;
+        private Bitmap _renderViewBitmap;
+        private Graphics _graphics;
 
         public TopLevelForm(Render renderObject)
         {
             InitializeComponent();
-            
+            _graphics = renderPictureBox.CreateGraphics();
             _renderedObject = renderObject;
 
-            _edgesToDraw = _renderedObject.Faces.SelectMany(face => face.Edges).Distinct();
-            
+            _renderedObject.DrawTopView(renderPictureBox);
+            _renderedObject.DrawSideView(sideViewPictureBox);
         }
 
         private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -25,18 +27,7 @@ namespace WinFormsApp
 
         private void startBttn_Click(object sender, EventArgs e)
         {
-            _renderedObject.MoveCenter(0, 0);
-            _renderedObject.Scale(2*pictureBox1.Height - 50, pictureBox1.Width - 50);
-            _renderedObject.MoveCenter(pictureBox1.Width/2, 2*pictureBox1.Height/2 - 10);
-            
-            var g = pictureBox1.CreateGraphics();
-            g.Clear(Color.White);
-
-            foreach (var edge in _edgesToDraw)
-            {
-                g.DrawLine(Pens.Black, new Point((int)edge.Item1.X, (int)edge.Item1.Y), 
-                    new Point((int)edge.Item2.X, (int)edge.Item2.Y));
-            }
+            _renderedObject.DrawTopView(renderPictureBox);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -52,6 +43,11 @@ namespace WinFormsApp
                 debugTextBox.AppendText((_clickedPoints[1] - _clickedPoints[0]).ToString()!);
                 _clickedPoints.Clear();
             }
+        }
+
+        private void pictureBox1_SizeChanged(object sender, EventArgs e)
+        {
+            _renderedObject?.DrawTopView(renderPictureBox);
         }
     }
 }

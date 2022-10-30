@@ -10,10 +10,30 @@ public class Edge
     
     public Edge(Vertex v1, Vertex v2)
     {
-        _v1 = v1;
-        _v2 = v2;
+        if (v1.Id < v2.Id)
+        {
+            _v1 = v1;
+            _v2 = v2;
+        }
+        else
+        {
+            _v1 = v2;
+            _v2 = v1;
+        }
+    }
+
+    public void DrawXY(Graphics graphics)
+    {
+        graphics.DrawLine(Pens.Black, (int)V1.X, (int)V1.Y, 
+            (int)V2.X, (int)V2.Y);
     }
     
+    public void DrawXZ(Graphics graphics)
+    {
+        graphics.DrawLine(Pens.Black, (int)V1.X, (int)V1.Z, 
+            (int)V2.X, (int)V2.Z);
+    }
+
     public override int GetHashCode()
     {
         unchecked
