@@ -19,7 +19,7 @@ namespace WinFormsApp
             _renderedObject = renderObject;
 
             _mainScene = new Scene(renderPictureBox, _renderedObject, 
-                @"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\Color-Green.jpg",
+                @"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\booster-rocket-raptor-engines.jpg",
                 new Illumination(new Point3(400.0, 400.0, 800.0), Color.CadetBlue));
             
             _mainScene.RenderTopView();

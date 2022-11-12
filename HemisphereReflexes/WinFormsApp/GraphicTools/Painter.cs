@@ -10,13 +10,13 @@ public class Painter
     {
     }
     
-    public void FillPolygon(Face face, Bitmap textureBitmap, DirectBitmap drawingBitmap, Illumination illumination, SurfaceProperties surface)
+    public void FillPolygon(Face face, Bitmap textureBitmap, DirectBitmap drawingBitmap, Illumination illumination, SurfaceProperties surface, NormalMap normalMap)
     {
         ScanLine scanLine = new ScanLine(face.Edges);
         
         var vertices = face.Vertices;
 
-        ColorGenerator colorGenerator = new ColorGenerator(illumination, textureBitmap, vertices, surface);
+        ColorGenerator colorGenerator = new ColorGenerator(illumination, textureBitmap, vertices, surface, normalMap);
 
         while (!scanLine.IsEnd)
         {

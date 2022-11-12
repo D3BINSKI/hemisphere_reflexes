@@ -1,5 +1,6 @@
 ﻿using System.Drawing.Imaging;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using WinFormsApp.GeometryComponents;
 
 namespace WinFormsApp.GraphicTools;
@@ -11,13 +12,15 @@ public class ColorGenerator
     private SurfaceProperties _surface;
     private List<Vertex> _vertices;
     private Color[] _verticesColors;
+    private NormalMap _normalMap;
 
-    public ColorGenerator(Illumination illumination, Bitmap texture, List<Vertex> vertices, SurfaceProperties surface)
+    public ColorGenerator(Illumination illumination, Bitmap texture, List<Vertex> vertices, SurfaceProperties surface, NormalMap normalMap)
     {
         _illumination = illumination;
         _objTexture = texture;
         _surface = surface;
         _vertices = vertices;
+        _normalMap = normalMap;
         _verticesColors = ComputeColorsInVertices(_vertices);
     }
 
@@ -38,7 +41,7 @@ public class ColorGenerator
 
     private Color CalculateColor(Vertex vertex)
     {
-        var N = vertex.NormalVector;
+        var N = _normalMap is not null ? _normalMap.GetNormalVector(vertex) : vertex.NormalVector;
         var L = Vector3.Normalize(new Vector3((float)(_illumination.Position.X - vertex.X),
             (float)(_illumination.Position.Y - vertex.Y),
             (float)(_illumination.Position.Z - vertex.Z)));
@@ -67,6 +70,12 @@ public class ColorGenerator
         Ib = Math.Min(Ib * 255, 255);
 
         return Color.FromArgb((byte)Ir, (byte)Ig, (byte)Ib);
+    }
+
+    public void ApplyNormalMap(Vector3 N, NormalMap normalMap, int x, int y)
+    {
+        
+        
     }
 
     public void SetVertices(List<Vertex> vertices)
@@ -144,6 +153,12 @@ public class ColorGenerator
         u /= surface;
         v /= surface;
 
-        return CalculateColorInPoint(x, y, InterpolateVector(w, u, v));
+        var N = InterpolateVector(w, u, v);
+        if (_normalMap is not null)
+        {
+            N = _normalMap.GetNormalVector(N, x, y);
+        }
+
+        return CalculateColorInPoint(x, y, N);
     }
 }

@@ -1,5 +1,6 @@
 using ObjParser;
 using WinFormsApp.GeometryComponents;
+using WinFormsApp.GraphicTools;
 
 namespace WinFormsApp
 {
@@ -17,7 +18,10 @@ namespace WinFormsApp
 
             var importedObject = new Obj();
             importedObject.LoadObj(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\data\icosphere-3.obj");
-            Render render = new Render(importedObject, Image.FromFile(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\Color-Green.jpg"));
+            Render render = new Render(
+                importedObject, 
+                Image.FromFile(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\booster-rocket-raptor-engines.jpg"),
+                new NormalMap(Image.FromFile(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\NormalMap_raptors.png"), new Size(500, 500)));
             Application.Run(new TopLevelForm(render));
         }
     }

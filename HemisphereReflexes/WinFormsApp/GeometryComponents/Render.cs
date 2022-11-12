@@ -25,11 +25,10 @@ public struct SurfaceProperties
 public class Render
 {
     private readonly int _offset = 20;
-
     private SurfaceProperties _surface;
+    private NormalMap _normalMap;
 
     public SurfaceProperties Surface => _surface;
-
     public List<Face> Faces { get; }
     public List<Vertex> Vertices { get; }
     public IEnumerable<Edge> Edges { get; }
@@ -43,12 +42,13 @@ public class Render
     private Image _textureImage;
     private Bitmap _textureBitmap;
 
-    public Render(Obj renderedObject, Image textureImage)
+    public Render(Obj renderedObject, Image textureImage, NormalMap normalMap)
     {
         Vertices = new List<Vertex>();
         Faces = new List<Face>();
 
         _surface = new SurfaceProperties(0.5, 0.5, 50);
+        _normalMap = normalMap;
 
         foreach (var vertex in renderedObject.VertexList)
         {
@@ -136,6 +136,7 @@ public class Render
         MoveCenter(width/2, height/2, 0);
         
         _textureBitmap = new Bitmap(_textureImage, (int)width, (int)height);
+        _normalMap.Resize(new Size((int)width, (int)height));
     }
 
     public void MoveCenter(float x, float y, float z)
@@ -170,7 +171,7 @@ public class Render
     {
         foreach (var face in Faces)
         {
-            painter.FillPolygon(face, _textureBitmap, bitmap, illumination, _surface);
+            painter.FillPolygon(face, _textureBitmap, bitmap, illumination, _surface, _normalMap);
         }
     }
     
