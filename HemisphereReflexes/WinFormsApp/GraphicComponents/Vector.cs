@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp;
+﻿namespace WinFormsApp.GraphicComponents;
 
 public class Vector3D
 {

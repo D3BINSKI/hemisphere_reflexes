@@ -1,34 +1,20 @@
 ﻿using System.Numerics;
 
-namespace WinFormsApp;
+namespace WinFormsApp.GraphicComponents;
 
-public class Vertex
+public class Vertex: Point3
 {
-    private float _x;
-    private float _y;
-    private float _z;
-
-    public Vertex(float x, float y, float z, int id)
+    public Vector3 NormalVector { get; }
+    public Vertex(Point3 p, int id, Vector3 normalVector) : base(p)
     {
-        _x = x;
-        _y = y;
-        _z = z;
-
         Id = id;
+        NormalVector = Vector3.Normalize(normalVector);
     }
-
-    public float X { get => _x; set => _x = value; }
-    public float Y { get => _y;
-        set => _y = value;
-    } 
-    public float Z { get => _z;
-        set => _z = value;
-    }
-
     public int Id { get; }
 
     public static Vector3 operator -(Vertex v1, Vertex v2) => 
         new Vector3((float)(v1.X - v2.X), (float)(v1.Y - v2.Y), (float)(v1.Z - v2.Z));
+    
 
     // public static Vertex operator +(Vertex v, Vector3 vector3) =>
     //     new Vertex(v.X + vector3.X, v.Y + vector3.Y, v.Z + vector3.Z);
@@ -86,6 +72,6 @@ public class Vertex
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_x, _y, _z);
+        return HashCode.Combine(X, Y, Z);
     }
 }

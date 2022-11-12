@@ -1,13 +1,16 @@
-﻿namespace WinFormsApp;
+﻿namespace WinFormsApp.GraphicComponents;
 
 public class Edge
 {
     private Vertex _v1;
     private Vertex _v2;
+    private double _slope;
 
     public Vertex V1 => _v1;
     public Vertex V2 => _v2;
-    
+
+    public double Slope => _slope;
+
     public Edge(Vertex v1, Vertex v2)
     {
         if (v1.Id < v2.Id)
@@ -20,6 +23,17 @@ public class Edge
             _v1 = v2;
             _v2 = v1;
         }
+
+        _slope = CountSlope(this);
+    }
+    
+    public double CountSlope(Edge edge)
+    {
+        var dx = edge.V2.X - edge.V1.X;
+        var dy = edge.V2.Y - edge.V1.Y;
+        var m = Math.Abs(dx) < Geometry.Eps ? Geometry.Infinity : dy / dx;
+
+        return m;
     }
 
     public void DrawXY(Graphics graphics)
