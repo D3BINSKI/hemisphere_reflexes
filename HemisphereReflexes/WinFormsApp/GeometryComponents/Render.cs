@@ -1,20 +1,34 @@
 ﻿using System.Numerics;
 using ObjParser;
-using System.Collections.Generic;
-using Vector = ObjParser.Types.Vector;
+using WinFormsApp.GraphicTools;
 
-namespace WinFormsApp.GraphicComponents;
+namespace WinFormsApp.GeometryComponents;
 
-public class Render
+public struct SurfaceProperties
 {
-    private readonly int _offset = 20;
     private double _kd;
     private double _ks;
     private double _m;
 
-    public double Kd { get => _kd; set => _kd = value <= 0? 0.01: value >= 1? 0.99: value; }
-    public double Ks { get => _ks; set => _ks = value <= 0? 0.01: value >= 1? 0.99: value; }
-    public double M { get => _m; set => _m = value < 1? 1: value > 100? 100: value; }
+    public double Kd { get => _kd; set => _kd = value; }
+    public double Ks { get => _ks; set => _ks = value; }
+    public double M { get => _m; set => _m = value; }
+
+    public SurfaceProperties(double kd, double ks, double m)
+    {
+        _ks = kd;
+        _kd = ks;
+        _m = m;
+    }
+}
+
+public class Render
+{
+    private readonly int _offset = 20;
+
+    private SurfaceProperties _surface;
+
+    public SurfaceProperties Surface => _surface;
 
     public List<Face> Faces { get; }
     public List<Vertex> Vertices { get; }
@@ -33,10 +47,8 @@ public class Render
     {
         Vertices = new List<Vertex>();
         Faces = new List<Face>();
-        
-        _ks = 0.5;
-        _kd = 0.5;
-        _m = 50;
+
+        _surface = new SurfaceProperties(0.5, 0.5, 50);
 
         foreach (var vertex in renderedObject.VertexList)
         {
@@ -72,6 +84,37 @@ public class Render
         
         _textureImage = textureImage;
         _textureBitmap = new Bitmap(_textureImage, (int)_xSpan, (int)_ySpan);
+    }
+
+    public void SetKd(double value)
+    {
+        if (value is < 0 or > 1)
+        {
+            throw new ArgumentException($"kd surface value must be in range (0, 1). Provided kd value is {value}");
+        }
+        _surface.Kd = value;
+    }
+    
+    public void SetKs(double value)
+    {
+        if (value is < 0 or > 1)
+        {
+            throw new ArgumentException($"ks surface value must be in range (0, 1). Provided ks value is {value}");
+        }
+        value = Math.Max(value, 0);
+        value = Math.Min(value, 1);
+        _surface.Ks = value;
+    }
+    
+    public void SetM(double value)
+    {
+        if (value is < 1 or > 100)
+        {
+            throw new ArgumentException($"m surface value must be in range (1, 100). Provided m value is {value}");
+        }
+        value = Math.Max(value, 1);
+        value = Math.Min(value, 100);
+        _surface.M = value;
     }
 
     public void FitToCanvas(float height, float width, int offset)
@@ -123,11 +166,11 @@ public class Render
         // pictureBox.Image = bitmap.Bitmap;
     }
 
-    public void FillFaces(Drawing.Drawing drawing, Bitmap bitmap, Illumination illumination)
+    public void FillFaces(GraphicTools.Painter painter, DirectBitmap bitmap, Illumination illumination)
     {
         foreach (var face in Faces)
         {
-            drawing.FillPolygon(face, _textureBitmap, bitmap, illumination, _kd, _ks, _m);
+            painter.FillPolygon(face, _textureBitmap, bitmap, illumination, _surface);
         }
     }
     

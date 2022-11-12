@@ -1,14 +1,13 @@
-﻿using System.Numerics;
-using System.Text;
+﻿using System.Text;
 
-namespace WinFormsApp.GraphicComponents;
+namespace WinFormsApp.GeometryComponents;
 
 public class Point3
 {
     private double _x;
     private double _y;
     private double _z;
-    
+
 
     public Point3(double x, double y, double z) { 
         _x = x; _y = y; _z = z; 
@@ -27,11 +26,12 @@ public class Point3
 
     public void Move(Vector3D vector)
     {
-        _x += (float)vector.X;
-        _y += (float)vector.Y;
-        _z += (float)vector.Z;
+        _x += vector.X;
+        _y += vector.Y;
+        _z += vector.Z;
     }
 
+    // TODO Remove after refactoring of finding point coordinates inside face 
     public static double Distance(Point3 p1, Point p2)
     {
         return Math.Sqrt(Math.Pow(p2.X - p1._x, 2) + Math.Pow(p2.Y - p1._y, 2));

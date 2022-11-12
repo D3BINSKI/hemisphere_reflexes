@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp.GraphicComponents;
+﻿namespace WinFormsApp.GeometryComponents;
 
 public class Edge
 {

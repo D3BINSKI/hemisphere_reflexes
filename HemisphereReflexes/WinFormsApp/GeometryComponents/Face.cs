@@ -1,7 +1,4 @@
-﻿using System.Numerics;
-using WinFormsApp.Drawing;
-
-namespace WinFormsApp.GraphicComponents;
+﻿namespace WinFormsApp.GeometryComponents;
 
 public class Face
 {

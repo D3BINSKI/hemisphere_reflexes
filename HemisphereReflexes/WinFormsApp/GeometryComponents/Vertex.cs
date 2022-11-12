@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace WinFormsApp.GraphicComponents;
+namespace WinFormsApp.GeometryComponents;
 
 public class Vertex: Point3
 {

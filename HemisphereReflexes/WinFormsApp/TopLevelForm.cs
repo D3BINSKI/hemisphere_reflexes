@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using ObjParser;
-using WinFormsApp.Drawing;
-using WinFormsApp.GraphicComponents;
+using WinFormsApp.GeometryComponents;
 
 namespace WinFormsApp
 {
@@ -20,8 +19,8 @@ namespace WinFormsApp
             _renderedObject = renderObject;
 
             _mainScene = new Scene(renderPictureBox, _renderedObject, 
-                @"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\pexels-photo-2178028.jpeg",
-                new Illumination(new Point3(300.0, 300.0, 800.0), Color.CadetBlue));
+                @"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\Color-Green.jpg",
+                new Illumination(new Point3(400.0, 400.0, 800.0), Color.CadetBlue));
             
             _mainScene.RenderTopView();
             _renderedObject.DrawSideView(sideViewPictureBox);
@@ -53,28 +52,36 @@ namespace WinFormsApp
 
         private void KdValueChanged(object sender, EventArgs e)
         {
-            _renderedObject.Kd = kdTrackBar.Value*(1.0/(kdTrackBar.Maximum-kdTrackBar.Minimum));
+            _renderedObject.SetKd(kdTrackBar.Value*(1.0/(kdTrackBar.Maximum-kdTrackBar.Minimum)));
+            RefreshMainScene();
             LogTrackBarsValueChange();
         }
 
         private void KsValueChanged(object sender, EventArgs e)
         {
-            _renderedObject.Ks = ksTrackBar.Value*(1.0/(kdTrackBar.Maximum-kdTrackBar.Minimum));
+            _renderedObject.SetKs(ksTrackBar.Value*(1.0/(ksTrackBar.Maximum-ksTrackBar.Minimum)));
+            RefreshMainScene();
             LogTrackBarsValueChange();
         }
 
         private void MValueChanged(object sender, EventArgs e)
         {
-            _renderedObject.M = mTrackBar.Value;
+            _renderedObject.SetM(mTrackBar.Value);
+            RefreshMainScene();
             LogTrackBarsValueChange();
         }
 
         private void LogTrackBarsValueChange()
         {
             debugTextBox.Clear();
-            debugTextBox.AppendText($"kd Value = {_renderedObject.Kd}\n");
-            debugTextBox.AppendText($"ks Value = {_renderedObject.Ks}\n");
-            debugTextBox.AppendText($"m Value = {_renderedObject.M}\n");
+            debugTextBox.AppendText($"kd Value = {_renderedObject.Surface.Kd}\n");
+            debugTextBox.AppendText($"ks Value = {_renderedObject.Surface.Ks}\n");
+            debugTextBox.AppendText($"m Value = {_renderedObject.Surface.M}\n");
+        }
+
+        private void RefreshMainScene()
+        {
+            _mainScene.FillRenderedObject();
         }
     }
 }

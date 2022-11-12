@@ -1,4 +1,4 @@
-﻿using WinFormsApp.GraphicComponents;
+﻿using WinFormsApp.GeometryComponents;
 
 namespace WinFormsApp;
 

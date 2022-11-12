@@ -1,5 +1,5 @@
 using ObjParser;
-using WinFormsApp.GraphicComponents;
+using WinFormsApp.GeometryComponents;
 
 namespace WinFormsApp
 {
@@ -16,8 +16,8 @@ namespace WinFormsApp
             ApplicationConfiguration.Initialize();
 
             var importedObject = new Obj();
-            importedObject.LoadObj(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\data\sphere-my.obj");
-            Render render = new Render(importedObject, Image.FromFile(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\pexels-photo-2178028.jpeg"));
+            importedObject.LoadObj(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\data\icosphere-3.obj");
+            Render render = new Render(importedObject, Image.FromFile(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\Color-Green.jpg"));
             Application.Run(new TopLevelForm(render));
         }
     }

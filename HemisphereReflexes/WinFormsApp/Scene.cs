@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using WinFormsApp.Drawing;
+using WinFormsApp.GeometryComponents;
+using WinFormsApp.GraphicTools;
 
 namespace WinFormsApp;
-
-using GraphicComponents;
 
 public class Scene
 {
@@ -11,7 +10,7 @@ public class Scene
     private Illumination _sceneIllumination;
     private PictureBox _scenePictureBox;
     private DirectBitmap _bitmap;
-    private Drawing.Drawing _drawing;
+    private GraphicTools.Painter _painter;
     private Image _choosenSceneImage;
 
     public DirectBitmap Bitmap => _bitmap;
@@ -24,7 +23,7 @@ public class Scene
         _bitmap = new DirectBitmap(new Bitmap(_choosenSceneImage, pictureBox.Width, pictureBox.Height));
         _sceneIllumination = illumination;
         _scenePictureBox.Image = _bitmap.Bitmap;
-        _drawing = new Drawing.Drawing();
+        _painter = new GraphicTools.Painter();
     }
 
     [SuppressMessage("ReSharper.DPA", "DPA0003: Excessive memory allocations in LOH", MessageId = "type: System.Int32[]")]
@@ -37,7 +36,7 @@ public class Scene
 
     public void FillRenderedObject()
     {
-        _renderObj.FillFaces(_drawing, _bitmap.Bitmap, _sceneIllumination);
+        _renderObj.FillFaces(_painter, _bitmap, _sceneIllumination);
 
         using var graphics = Graphics.FromImage(this._bitmap.Bitmap);
         graphics.DrawLine(Pens.Black,0,0,100,100);

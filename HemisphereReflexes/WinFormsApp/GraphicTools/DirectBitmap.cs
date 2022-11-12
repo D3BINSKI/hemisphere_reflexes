@@ -1,8 +1,7 @@
 ﻿using System.Drawing.Imaging;
-using System.IO.Pipes;
 using System.Runtime.InteropServices;
 
-namespace WinFormsApp.Drawing;
+namespace WinFormsApp.GraphicTools;
 
 public class DirectBitmap : IDisposable
 {
