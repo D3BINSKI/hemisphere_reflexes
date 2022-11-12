@@ -31,12 +31,6 @@ public class Point3
         _z += vector.Z;
     }
 
-    // TODO Remove after refactoring of finding point coordinates inside face 
-    public static double Distance(Point3 p1, Point p2)
-    {
-        return Math.Sqrt(Math.Pow(p2.X - p1._x, 2) + Math.Pow(p2.Y - p1._y, 2));
-    }
-
     public override string ToString()
     {
         StringBuilder stringBuilder = new StringBuilder();
