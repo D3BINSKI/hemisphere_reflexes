@@ -42,7 +42,7 @@ public class Render
     private Image _textureImage;
     private Bitmap _textureBitmap;
 
-    public Render(Obj renderedObject, Image textureImage, NormalMap normalMap)
+    public Render(Obj renderedObject, Image textureImage, NormalMap? normalMap)
     {
         Vertices = new List<Vertex>();
         Faces = new List<Face>();
@@ -136,7 +136,7 @@ public class Render
         MoveCenter(width/2, height/2, 0);
         
         _textureBitmap = new Bitmap(_textureImage, (int)width, (int)height);
-        _normalMap.Resize(new Size((int)width, (int)height));
+        _normalMap?.Resize(new Size((int)width, (int)height));
     }
 
     public void MoveCenter(float x, float y, float z)

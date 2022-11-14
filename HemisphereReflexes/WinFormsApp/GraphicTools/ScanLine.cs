@@ -11,13 +11,17 @@ public class ScanLine
 
     public int CurrentY => _currentY;
 
-    public ScanLine(List<Edge> edges)
+    public ScanLine()
     {
         _et = new List<AETPointer>[1500];
         _aet = new List<AETPointer>();
-        _edgesCount = edges.Count();
+        _edgesCount = 0;
+    }
 
+    public void Initialize(List<Edge> edges)
+    {
         var globalYMin = 1500;
+        _edgesCount = edges.Count;
         
         foreach (var edge in edges)
         {
@@ -47,18 +51,21 @@ public class ScanLine
     
     public void UpdateAet()
     {
-        var newEdgesPointers = _et[_currentY]?.Select(pointer => pointer).ToList();
-        if (newEdgesPointers is not null)
+        if (_et[_currentY] is not null)
         {
-            _edgesCount -= newEdgesPointers.Count;
-            newEdgesPointers.ForEach(pointer => _aet.Add(pointer));
+            foreach (var pointer in _et[_currentY])
+            {
+                _aet.Add(pointer);
+                _edgesCount--;
+            }
         }
+        _et[_currentY]?.Clear();
+
 
         _aet.RemoveAll(pointer => pointer.YMax <= _currentY);
         
         _currentY += 1;
         _aet.ForEach(pointer => pointer.UpdateX());
         _aet.Sort();
-
     }
 }

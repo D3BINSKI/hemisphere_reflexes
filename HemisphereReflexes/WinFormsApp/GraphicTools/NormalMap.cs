@@ -23,7 +23,7 @@ public class NormalMap
         return Vector3.Normalize(new Vector3(
             (float)GetVectorComponent(pixelColor.R),
             (float)GetVectorComponent(pixelColor.G),
-            (float)GetVectorComponent(pixelColor.B)));
+            (float)Math.Max(GetVectorComponent(pixelColor.B), 0)));
     }
 
     public double GetVectorComponent(byte value)

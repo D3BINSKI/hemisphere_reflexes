@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Configuration;
+using System.Numerics;
 using WinFormsApp.GeometryComponents;
 
 namespace WinFormsApp.GraphicTools;
@@ -6,28 +7,31 @@ namespace WinFormsApp.GraphicTools;
 public class Painter
 {
     private int _colorCount = 0;
+    private ScanLine _scanLine;
+    
     public Painter()
     {
+        _scanLine = new ScanLine();
     }
     
-    public void FillPolygon(Face face, Bitmap textureBitmap, DirectBitmap drawingBitmap, Illumination illumination, SurfaceProperties surface, NormalMap normalMap)
+    public void FillPolygon(Face face, Bitmap textureBitmap, DirectBitmap drawingBitmap, Illumination illumination, SurfaceProperties surface, NormalMap? normalMap)
     {
-        ScanLine scanLine = new ScanLine(face.Edges);
+        _scanLine.Initialize(face.Edges);
         
         var vertices = face.Vertices;
 
         ColorGenerator colorGenerator = new ColorGenerator(illumination, textureBitmap, vertices, surface, normalMap);
 
-        while (!scanLine.IsEnd)
+        while (!_scanLine.IsEnd)
         {
-            scanLine.UpdateAet();
+            _scanLine.UpdateAet();
 
-            var intersectionPoints = scanLine.IntersectionPoints.ToList();
+            var intersectionPoints = _scanLine.IntersectionPoints;
             if (intersectionPoints.Count() > 1)
             {
-                for (int x = intersectionPoints[0]; x <= intersectionPoints[1]; x++)
+                for (int x = intersectionPoints.First(); x <= intersectionPoints.Last(); x++)
                 {
-                    drawingBitmap.SetPixel(x, scanLine.CurrentY, colorGenerator.GetColorInPoint(x, scanLine.CurrentY));
+                    drawingBitmap.SetPixel(x, _scanLine.CurrentY, colorGenerator.GetColorInPoint(x, _scanLine.CurrentY));
                 }
 
                 _colorCount++;

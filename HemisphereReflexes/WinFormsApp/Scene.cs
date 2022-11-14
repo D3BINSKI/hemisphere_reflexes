@@ -61,4 +61,37 @@ public class Scene
     {
         _renderObj.FitToCanvas(_bitmap.Height, _bitmap.Width, 20);
     }
+
+    public void Render(object? obj, EventArgs args)
+    {
+        _renderObj.FillFaces(_painter, _bitmap, _sceneIllumination);
+        _sceneIllumination.Rotate(); 
+        _scenePictureBox.Invalidate(new Rectangle(0,0,_bitmap.Width, Bitmap.Height));
+        _scenePictureBox.Update();
+    }
+
+    private void Simulation()
+    {
+        while(true)
+        {
+            _renderObj.FillFaces(_painter, _bitmap, _sceneIllumination);
+            _sceneIllumination.Rotate(); 
+            using var graphics = Graphics.FromImage(this._bitmap.Bitmap);
+            graphics.DrawLine(Pens.Black,0,0,100,100);
+            _scenePictureBox.Invalidate(new Rectangle(0,0,_bitmap.Width, Bitmap.Height));
+            _scenePictureBox.Update();
+            Thread.Sleep(30);
+        }
+    }
+
+    public void RunSimulation()
+    {
+        Thread thr = new Thread(new ThreadStart(Simulation));
+        thr.Start();
+    }
+
+    public void SetIlluminationHeight(double newHeight)
+    {
+        _sceneIllumination.ChangeHeight(newHeight);
+    }
 }
