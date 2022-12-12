@@ -7,6 +7,10 @@ namespace WinFormsApp.GraphicTools;
 public class NormalMap
 {
     private Bitmap _bitmap;
+    
+    public int Width => _bitmap.Width;
+    public int Height => _bitmap.Height;
+    
     public NormalMap(Image normalMap, Size size)
     {
         _bitmap = new Bitmap(normalMap, size.Width, size.Height);
@@ -28,7 +32,7 @@ public class NormalMap
 
     public double GetVectorComponent(byte value)
     {
-        return (value - 127.0) / 255.0;
+        return (double)value / 128 - 1;
     }
 
     public Vector3 GetNormalVector(Vertex vertex)
@@ -49,10 +53,10 @@ public class NormalMap
             T.Z, B.Z, Np.Z, 0,
             0, 0, 0, 1);
 
-        return new Vector3(
+        return Vector3.Normalize(new Vector3(
             M.M11 * Nt.X + M.M12 * Nt.Y + M.M13 * Nt.Z,
             M.M21 * Nt.X + M.M22 * Nt.Y + M.M23 * Nt.Z,
-            M.M31 * Nt.X + M.M32 * Nt.Y + M.M33 * Nt.Z);
+            M.M31 * Nt.X + M.M32 * Nt.Y + M.M33 * Nt.Z));
     }
 
     public Vector3 GetNormalVector(Vector3 N, int x, int y)
@@ -73,9 +77,9 @@ public class NormalMap
             T.Z, B.Z, Np.Z, 0,
             0, 0, 0, 1);
 
-        return new Vector3(
+        return Vector3.Normalize(new Vector3(
             M.M11 * Nt.X + M.M12 * Nt.Y + M.M13 * Nt.Z,
             M.M21 * Nt.X + M.M22 * Nt.Y + M.M23 * Nt.Z,
-            M.M31 * Nt.X + M.M32 * Nt.Y + M.M33 * Nt.Z);
+            M.M31 * Nt.X + M.M32 * Nt.Y + M.M33 * Nt.Z));
     }
 }

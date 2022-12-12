@@ -26,13 +26,6 @@ public class Render
 {
     private readonly int _offset = 20;
     private SurfaceProperties _surface;
-    private NormalMap _normalMap;
-
-    public SurfaceProperties Surface => _surface;
-    public List<Face> Faces { get; }
-    public List<Vertex> Vertices { get; }
-    public IEnumerable<Edge> Edges { get; }
-
     private double _xSpan;
     private double _ySpan;
     private double _zSpan;
@@ -40,7 +33,24 @@ public class Render
     private (double x, double y, double z) _center;
 
     private Image _textureImage;
+    private NormalMap _normalMap;
     private Bitmap _textureBitmap;
+    private HeightMap _heightMap;
+    
+    public Image TextureImage { get => _textureImage; set => _textureImage = value; }
+    
+    public NormalMap NormalMap { get => _normalMap; set => _normalMap = value; }
+    
+    public HeightMap HeightMap
+    {
+        get => _heightMap;
+        set => _heightMap = value;
+    }
+
+    public SurfaceProperties Surface => _surface;
+    public List<Face> Faces { get; }
+    public List<Vertex> Vertices { get; }
+    public IEnumerable<Edge> Edges { get; }
 
     public Render(Obj renderedObject, Image textureImage, NormalMap? normalMap)
     {
@@ -84,6 +94,11 @@ public class Render
         
         _textureImage = textureImage;
         _textureBitmap = new Bitmap(_textureImage, (int)_xSpan, (int)_ySpan);
+        _heightMap =
+            new HeightMap(
+                Image.FromFile(
+                    @"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Height Map\great_lakes.jpg"),
+                new Size(500, 500));
     }
 
     public void SetKd(double value)
@@ -137,6 +152,41 @@ public class Render
         
         _textureBitmap = new Bitmap(_textureImage, (int)width, (int)height);
         _normalMap?.Resize(new Size((int)width, (int)height));
+        _heightMap?.Resize(new Size((int)width, (int)height));
+    }
+
+    public void SetTexture(Bitmap newTexture)
+    {
+        var oldTexture = _textureBitmap;
+        _textureBitmap = new Bitmap(newTexture, oldTexture.Width, oldTexture.Height);
+    }
+    
+    //set _textureBitmap from Color
+    public void SetTexture(Color color)
+    {
+        var oldTexture = _textureBitmap;
+        _textureBitmap = new Bitmap(oldTexture.Width, oldTexture.Height);
+        for (var i = 0; i < _textureBitmap.Width; i++)
+        {
+            for (var j = 0; j < _textureBitmap.Height; j++)
+            {
+                _textureBitmap.SetPixel(i, j, color);
+            }
+        }
+        _textureImage = Image.FromHbitmap(_textureBitmap.GetHbitmap());
+    }
+
+    public void SetNormalMap(Image newNormalMapImage)
+    {
+        var oldNormalMap = _normalMap;
+        if(oldNormalMap is not null)
+        {
+            _normalMap = new NormalMap(newNormalMapImage, new Size(oldNormalMap.Width, oldNormalMap.Height));
+        }
+        else
+        {
+            _normalMap = new NormalMap(newNormalMapImage, new Size(newNormalMapImage.Width, newNormalMapImage.Height));
+        }
     }
 
     public void MoveCenter(float x, float y, float z)
@@ -167,11 +217,11 @@ public class Render
         // pictureBox.Image = bitmap.Bitmap;
     }
 
-    public void FillFaces(GraphicTools.Painter painter, DirectBitmap bitmap, Illumination illumination)
+    public void FillFaces(GraphicTools.Painter painter, DirectBitmap bitmap, Illumination illumination, bool isVectorInterpolation, bool isVectorMapUsed)
     {
         foreach (var face in Faces)
         {
-            painter.FillPolygon(face, _textureBitmap, bitmap, illumination, _surface, _normalMap);
+            painter.FillPolygon(face, _textureBitmap, bitmap, illumination, _surface, _normalMap, _heightMap, isVectorInterpolation, isVectorMapUsed);
         }
     }
     

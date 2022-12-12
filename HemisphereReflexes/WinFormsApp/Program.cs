@@ -24,11 +24,11 @@ namespace WinFormsApp
             ApplicationConfiguration.Initialize();
 
             var importedObject = new Obj();
-            importedObject.LoadObj(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\data\icosphere-3.obj");
+            importedObject.LoadObj(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Models\icosphere-3.obj");
             Render render = new Render(
                 importedObject, 
                 Image.FromFile(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\2k_earth_daymap.jpg"),
-                new NormalMap(Image.FromFile(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\Images\2k_earth_normal_map.tif"), new Size(500, 500)));
+                new NormalMap(Image.FromFile(@"D:\Software\Projects\Computer Graphics\hemisphere_reflexes\HemisphereReflexes\WinFormsApp\NormalMaps\2k_earth_normal_map.tif"), new Size(500, 500)));
             Application.Run(new TopLevelForm(render));
         }
     }

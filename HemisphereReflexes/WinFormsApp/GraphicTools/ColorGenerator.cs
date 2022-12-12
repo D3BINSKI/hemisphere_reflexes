@@ -14,9 +14,11 @@ public class ColorGenerator
     private List<Vertex> _vertices;
     private Color[] _verticesColors;
     private NormalMap? _normalMap;
-    private Configuration _config;
-
-    public ColorGenerator(Illumination illumination, Bitmap texture, List<Vertex> vertices, SurfaceProperties surface, NormalMap? normalMap)
+    private bool _isVectorInterpolation;
+    private bool _isNormalMapUsed;
+    private HeightMap _heightMap;
+    
+    public ColorGenerator(Illumination illumination, Bitmap texture, List<Vertex> vertices, SurfaceProperties surface, NormalMap? normalMap, HeightMap? heightMap, bool isVectorInterpolation, bool isNormalMapUsed)
     {
         _illumination = illumination;
         _objTexture = texture;
@@ -24,8 +26,10 @@ public class ColorGenerator
         _vertices = vertices;
         _normalMap = normalMap;
         _verticesColors = ComputeColorsInVertices(_vertices);
-        _config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
-
+        _isVectorInterpolation = isVectorInterpolation;
+        _heightMap = heightMap;
+        _isNormalMapUsed = isNormalMapUsed;
+        // _config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
     }
 
     private Color[] ComputeColorsInVertices(IReadOnlyList<Vertex> vertices)
@@ -45,14 +49,14 @@ public class ColorGenerator
 
     private Color CalculateColor(Vertex vertex)
     {
-        var N = _normalMap?.GetNormalVector(vertex) ?? vertex.NormalVector;
+        var N = _heightMap?.GetNormalVector(vertex) ?? vertex.NormalVector;
         var L = Vector3.Normalize(new Vector3((float)(_illumination.Position.X - vertex.X),
             (float)(_illumination.Position.Y - vertex.Y),
             (float)(_illumination.Position.Z - vertex.Z)));
             
         double cosNL = Math.Max(Vector3.Dot(N,L), 0);
 
-        var R = Vector3.Subtract(2 * ((float)cosNL) * N, L);
+        var R = Vector3.Subtract(2 * (float)cosNL * N, L);
         double cosVR = Math.Max(R.Z, 0);
 
         var pixelColor = _objTexture.GetPixel((int)vertex.X, (int)vertex.Y);
@@ -132,46 +136,65 @@ public class ColorGenerator
     public Color GetColorInPoint(int x, int y)
     {
         // p = wV0 + uV1 + vV2 
-        var v1p = new Vector3((float)(x - _vertices[1].X), (float)(y - _vertices[1].Y), 0);
-        var v1v2 = new Vector3((float)(_vertices[2].X - _vertices[1].X), (float)(_vertices[2].Y - _vertices[1].Y), 0);
+        var v1p = new Vector3((int)(x - _vertices[1].X), (int)(y - _vertices[1].Y), 0);
+        var v1v2 = new Vector3((int)(_vertices[2].X - _vertices[1].X), (int)(_vertices[2].Y - _vertices[1].Y), 0);
         var w = Vector3.Cross(v1p, v1v2).Length();
         
-        var v1v0 = new Vector3((float)(_vertices[0].X - _vertices[1].X), (float)(_vertices[0].Y - _vertices[1].Y), 0);
+        var v1v0 = new Vector3((int)(_vertices[0].X - _vertices[1].X), (int)(_vertices[0].Y - _vertices[1].Y), 0);
 
         var v = Vector3.Cross(v1p, v1v0).Length();
         
-        var v0p = new Vector3((float)(x - _vertices[0].X), (float)(y - _vertices[0].Y), 0);
-        var v0v2 = new Vector3((float)(_vertices[2].X - _vertices[0].X), (float)(_vertices[2].Y - _vertices[0].Y), 0);
+        var v0p = new Vector3((int)(x - _vertices[0].X), (int)(y - _vertices[0].Y), 0);
+        var v0v2 = new Vector3((int)(_vertices[2].X - _vertices[0].X), (int)(_vertices[2].Y - _vertices[0].Y), 0);
 
         var u = Vector3.Cross(v0p, v0v2).Length();
         
         // normalization
-        var surface = Vector3.Cross(v0v2, -v1v0).Length();
+        var surface = w + u + v;
         w /= surface;
         u /= surface;
         v /= surface;
 
-        var colorComputationMethod = _config.AppSettings.Settings["colorComputationMethod"].Value;
-
-        switch (colorComputationMethod)
+        switch (_isNormalMapUsed)
         {
-            case "vectorInterpolation":
-            {
-                var N = InterpolateVector(w, u, v);
-                if (_normalMap is not null)
+            case true:
+                switch(_isVectorInterpolation)
                 {
-                    N = _normalMap.GetNormalVector(N, x, y);
-                }
+                    case true:
+                    {
+                        var N = InterpolateVector(w, u, v);
+                        if (_normalMap is not null)
+                        {
+                            N = _normalMap.GetNormalVector(N, x, y);
+                        }
 
-                return CalculateColorInPoint(x, y, N);
-            }
-            case "colorInterpolation":
-            {
-                return InterpolateColor(w, u, v);
-            }
-            default:
-                return Color.FromArgb(0, 0, 0);
+                        return CalculateColorInPoint(x, y, N);
+                    }
+                    case false:
+                    {
+                        return InterpolateColor(w, u, v);
+                    }
+                }
+            case false:
+                switch(_isVectorInterpolation)
+                {
+                    case true:
+                    {
+                        var N = InterpolateVector(w, u, v);
+                        if (_heightMap is not null)
+                        {
+                            N = _heightMap.GetNormalVector(N, x, y);
+                        }
+
+                        return CalculateColorInPoint(x, y, N);
+                    }
+                    case false:
+                    {
+                        return InterpolateColor(w, u, v);
+                    }
+                }
         }
+        
         
     }
 }

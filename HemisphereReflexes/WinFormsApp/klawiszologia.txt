@@ -1,0 +1,22 @@
+﻿Opis działania programu 
+
+Przyciski "Start" oraz "Pause":
+Start uruchamia program, a Pause zatrzymuje go.
+
+Cztery suwaki:
+-kd - zmienia wartość zmiennej kd w zakresie od 0 do 1
+-ks - zmienia wartość zmiennej ks w zakresie od 0 do 1
+-m - zmienia wartość zmiennej m w zakresie od 1 do 100
+-z - pozwala na zmianę wysokości źródła światła względem podstawy półkóli
+
+Zmiana metody obliczania kolorów w punkcie - radiobuttons:
+-"color interpolation" - ustawia metodę obliczania kolorów wewnątrz trójkątów na
+interpolację kolorów na podstawie wartości kolorów w wierzchołkach trójkąta
+
+-"vector interpolation" - ustawia metodę obliczania kolorów wewnątrz trójkątów na
+    wyznaczanie koloru dokładnie w punkcie interpolując wektory normalne 'do wnętrza'
+    
+Przyciski "Set Static Color", "Set Texture", "Set Normal Map"
+-"Set Static Color" - pozwala na ustawienie jednolitego koloru dla całego obiektu
+-"Set Texture" - pozwala na ustawienie tekstury dla całego obiektu
+-"Set Normal Map" - pozwala na ustawienie mapy normalnej obiektu

@@ -14,13 +14,13 @@ public class Painter
         _scanLine = new ScanLine();
     }
     
-    public void FillPolygon(Face face, Bitmap textureBitmap, DirectBitmap drawingBitmap, Illumination illumination, SurfaceProperties surface, NormalMap? normalMap)
+    public void FillPolygon(Face face, Bitmap textureBitmap, DirectBitmap drawingBitmap, Illumination illumination, SurfaceProperties surface, NormalMap? normalMap, HeightMap? heightMap, bool isVectorInterpolation, bool isHeightMapUsed)
     {
         _scanLine.Initialize(face.Edges);
         
         var vertices = face.Vertices;
 
-        ColorGenerator colorGenerator = new ColorGenerator(illumination, textureBitmap, vertices, surface, normalMap);
+        ColorGenerator colorGenerator = new ColorGenerator(illumination, textureBitmap, vertices, surface, normalMap, heightMap, isVectorInterpolation, isHeightMapUsed);
 
         while (!_scanLine.IsEnd)
         {
